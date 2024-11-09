@@ -474,8 +474,11 @@ api.add_resource(ProductResource, '/products')
 @app.route('/images/<filename>')
 @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
 def uploaded_file(filename):
-    image_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Image')  # Adjust path if needed
+    image_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Image')
+    file_path = os.path.join(image_folder, filename)
+    print(f"Serving file from: {file_path}")  # Log the path for debugging
     return send_from_directory(image_folder, filename)
+
 
 @app.route('/product/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
 @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
