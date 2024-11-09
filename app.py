@@ -19,7 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
 
-CORS(app, supports_credentials=True, resources={r"/images/*":  {"origins":'https://maingishop.netlify.app'}})
+CORS(app, supports_credentials=True, origins=['https://maingishop.netlify.app'])
 
 migrate =  Migrate(app, db)
 
