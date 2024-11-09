@@ -38,7 +38,7 @@ jwt = JWTManager(app)
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=10)  # Access token expires in 10 hours
 JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
-UPLOAD_FOLDER = 'Images'  # Relative path or absolute path
+UPLOAD_FOLDER = 'Image'  # Relative path or absolute path
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
