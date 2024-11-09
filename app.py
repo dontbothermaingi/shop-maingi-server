@@ -41,6 +41,9 @@ JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Image')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
