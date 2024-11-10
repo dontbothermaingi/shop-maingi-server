@@ -22,7 +22,7 @@ app.json.compact = False
 CORS(app, supports_credentials=True, origins=['https://maingishop.netlify.app'])
 
 # Now, specifically allow sharing of image resources
-CORS(app, resources={r"/images/*": {"origins": "https://maingishop.netlify.app"}})
+CORS(app, resources={r"/images/*": {"origins": "*"}})
 
 migrate =  Migrate(app, db)
 
@@ -475,12 +475,12 @@ class ProductResource(Resource):
 api.add_resource(ProductResource, '/products')
 
 @app.route('/images/<filename>')
-@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+@cross_origin(supports_credentials=True, origins=['*'])
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename),200
 
 @app.route('/product/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
-@cross_origin(supports_credentials=True, origins=['*'])
+@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
 @jwt_required()
 def get_patch_and_delete_product_by_id(id):
 
