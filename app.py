@@ -52,6 +52,9 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+print(os.path.exists(app.config['UPLOAD_FOLDER']))  # Should print True
+print(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp'))
+print(os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp')))  # Should print True
 
 class UserRegister(Resource):
     @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
