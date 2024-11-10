@@ -41,6 +41,7 @@ jwt = JWTManager(app)
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=10)  # Access token expires in 10 hours
 JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB limit
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Image')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
