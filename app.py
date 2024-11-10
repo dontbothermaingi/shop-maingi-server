@@ -750,15 +750,15 @@ class OrderResource(Resource):
                 if field not in item_data:
                     return jsonify({'error': f'Missing required field in item: {field}'}), 400
         
-        product_id = item_data.get('product_id')
-        quantity = item_data.get('quantity')
+            product_id = item_data.get('product_id')
+            quantity = item_data.get('quantity')
 
-        new_order_item = OrderItem(
-            product_id=product_id,
-            quantity=quantity,
-        )
+            new_order_item = OrderItem(
+                product_id=product_id,
+                quantity=quantity,
+            )
 
-        new_order.order_items.append(new_order_item)
+            new_order.order_items.append(new_order_item)
 
         try:
             db.session.add(new_order)
