@@ -21,6 +21,9 @@ app.json.compact = False
 
 CORS(app, supports_credentials=True, origins=['https://maingishop.netlify.app'])
 
+# Now, specifically allow sharing of image resources
+CORS(app, resources={r"/images/*": {"origins": "https://maingishop.netlify.app"}})
+
 migrate =  Migrate(app, db)
 
 db.init_app(app)
@@ -472,6 +475,7 @@ class ProductResource(Resource):
 api.add_resource(ProductResource, '/products')
 
 @app.route('/static/images/<filename>')
+@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
 def get_image(filename):
     image_directory = os.path.join(app.root_path, 'static/images')
     return send_from_directory(image_directory, filename), 200
