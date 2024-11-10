@@ -510,8 +510,7 @@ def get_patch_and_delete_product_by_id(id):
         # Secure and save the filename if the file is valid
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        print(os.path.isfile(app.config['UPLOAD_FOLDER'], filename))
-
+        print(os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)))
 
         product.product_image = filename
 
