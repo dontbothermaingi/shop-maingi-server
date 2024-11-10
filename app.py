@@ -471,10 +471,10 @@ class ProductResource(Resource):
         
 api.add_resource(ProductResource, '/products')
 
-@app.route('/images/<filename>')
-@cross_origin(supports_credentials=True, origins=['*'])
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename),200
+@app.route('/static/images/<filename>')
+def get_image(filename):
+    image_directory = os.path.join(app.root_path, 'static/images')
+    return send_from_directory(image_directory, filename), 200
 
 
 @app.route('/product/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
