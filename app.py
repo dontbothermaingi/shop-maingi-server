@@ -534,19 +534,15 @@ def get_patch_and_delete_product_by_id(id):
                 product.key_features.append(new_key_features)
         
         specifications_data = json.loads(data.get('specifications', '[]'))
-        if not specifications_data:
-            return jsonify({'error': 'No items provided for the invoice'}), 400
-        
-        product.specifications.clear()
-
-        for specification_data in specifications_data:
-            required_fields=['header', 'content']
-            for field in required_fields:
-                if field not in specification_data:
-                    return jsonify({'error': f'Missing required fields in item'}), 400
-                
-                new_specification = Specification(**specification_data)
-                product.specifications.append(new_specification)
+        if specifications_data:
+            product.specifications.clear()
+            for spec_data in specifications_data:
+                if 'header' not in spec_data or 'content' not in spec_data:
+                    return jsonify({'error': 'Missing header or content in specifications'}), 400
+                new_spec = Specification(**spec_data)
+                product.specifications.append(new_spec)
+        else:
+            return jsonify({'error': 'No specifications provided'}), 400
 
         for key, value in data.items():
             if key in allowed_fields:
