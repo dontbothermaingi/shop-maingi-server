@@ -474,12 +474,10 @@ class ProductResource(Resource):
         
 api.add_resource(ProductResource, '/products')
 
-@app.route('/static/images/<filename>')
+@app.route('/images/<filename>')
 @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
-def get_image(filename):
-    image_directory = os.path.join(app.root_path, 'static/images')
-    return send_from_directory(image_directory, filename), 200
-
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename),200
 
 @app.route('/product/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
 @cross_origin(supports_credentials=True, origins=['*'])

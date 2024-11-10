@@ -129,7 +129,7 @@ class Product(db.Model):
         return {
             "id": self.id,
             "product_name": self.product_name,
-            "product_image": f"/static/images/{self.product_image}",
+            "product_image": f"/images/{self.product_image}",
             "product_description": self.product_description,
             "product_quantity": self.product_quantity,
             "product_price": self.product_price,
