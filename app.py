@@ -481,7 +481,7 @@ def uploaded_file(filename):
 
 
 @app.route('/product/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
-@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+@cross_origin(supports_credentials=True, origins=['*'])
 @jwt_required()
 def get_patch_and_delete_product_by_id(id):
 
