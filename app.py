@@ -19,7 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
 
-CORS(app, supports_credentials=True, origins=['https://maingishop.netlify.app'])
+CORS(app, supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
 
 # Now, specifically allow sharing of image resources
 CORS(app, resources={r"/images/*": {"origins": "*"}})
@@ -58,7 +58,7 @@ print(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp'))
 print(os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp')))  # Should print True
 
 class UserRegister(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app', "http://localhost:4000"])
     def post(self):
 
         data = request.get_json()
@@ -110,7 +110,7 @@ class UserRegister(Resource):
 api.add_resource(UserRegister, '/userRegister', endpoint='register')
 
 class UserLogin(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def post(self):
         data = request.get_json(force=True)
 
@@ -151,7 +151,7 @@ class UserLogin(Resource):
 api.add_resource(UserLogin, '/userLogin')
 
 class CheckSession(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     @jwt_required(optional=True)  # Allow access without token but handle it explicitly
     def get(self):
         # Retrieve user ID from token if present
@@ -175,7 +175,7 @@ api.add_resource(CheckSession, '/check_session')
 
 class UserLogout(Resource):
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def post(self):
         # Revoke the token
         jti = get_jwt()['jti']
@@ -215,7 +215,7 @@ api.add_resource(TokenRefresh, '/tokenrefresh')
 
 class TokenRevocation(Resource):
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def post(self):
         jti = get_jwt()['jti']  # Get JWT ID from the current token
         revoked_token = RevokedToken(jti=jti)
@@ -225,7 +225,7 @@ class TokenRevocation(Resource):
     
 class UserDetails(Resource):
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def get(self):
         current_user_id = get_jwt_identity()
 
@@ -247,7 +247,7 @@ class UserDetails(Resource):
         return {"user": user_data}, 200
 
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def patch(self):
         current_user_id = get_jwt_identity()
 
@@ -304,7 +304,7 @@ api.add_resource(UserDetails, '/userdetails')
 
 class AddressBook(Resource):
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def get(self):
         current_user_id = get_jwt_identity()
         addresses = CustomerAddress.query.filter_by(user_id=current_user_id).all()
@@ -353,7 +353,7 @@ class AddressBook(Resource):
             return jsonify({'error': f'Failed to create address: {str(e)}'}), 500
         
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def patch(self):
         current_user_id = get_jwt_identity()
 
@@ -386,13 +386,13 @@ class AddressBook(Resource):
 api.add_resource(AddressBook, '/addressbook')
 
 class ProductResource(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def get(self):
         products = Product.query.all()
         return [product.to_dict() for product in products]
     
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def post(self):
         data = request.form
         file = request.files.get('product_image')
@@ -484,7 +484,7 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename),200
 
 @app.route('/product/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
-@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
 @jwt_required()
 def get_patch_and_delete_product_by_id(id):
 
@@ -566,7 +566,7 @@ def get_patch_and_delete_product_by_id(id):
 
 
 class CartResource(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     @jwt_required()
     def get(self):
         current_user_id = get_jwt_identity()
@@ -578,7 +578,7 @@ class CartResource(Resource):
         return jsonify(cart.to_dict()), 200
 
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def post(self):
         current_user_id = get_jwt_identity()
 
@@ -596,7 +596,7 @@ class CartResource(Resource):
             return jsonify({'error': f'Failed to create cart: {str(e)}'}), 500
     
     @jwt_required()
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     def delete(self):
         """Clear all items from the current user's cart after order creation."""
         current_user_id = get_jwt_identity()
@@ -616,7 +616,7 @@ class CartResource(Resource):
 
 
 class CartItemResource(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     @jwt_required()
     def post(self):
         current_user_id = get_jwt_identity()
@@ -667,7 +667,7 @@ api.add_resource(CartResource, '/cart')  # Define the endpoint for Cart
 api.add_resource(CartItemResource, '/cartitems')  # Define the endpoint for CartItems
 
 @app.route('/editcart/<int:product_id>', methods=['GET','PATCH','DELETE'])
-@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
 @jwt_required()
 def get_patch_delete_by_id(product_id):
 
@@ -709,7 +709,7 @@ def get_patch_delete_by_id(product_id):
             return jsonify({'error': f'Failed to delete Cart item: {str(e)}'}), 500
 
 class OrderResource(Resource):    
-    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+    @cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
     @jwt_required()
     def post (self):
 
@@ -771,7 +771,7 @@ class OrderResource(Resource):
 api.add_resource(OrderResource, '/neworder')
 
 @app.route('/order/<int:id>', methods=['GET'])
-@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app',"http://localhost:4000"])
 @jwt_required()
 def get_order_by_id(id):
     
@@ -786,7 +786,7 @@ def get_order_by_id(id):
         return jsonify(order.to_dict()), 200
     
 @app.route('/orderitems', methods=['GET'])
-@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app'])
+@cross_origin(supports_credentials=True, origins=['https://maingishop.netlify.app', "http://localhost:4000"])
 @jwt_required()
 def get_order():
     current_user_id = get_jwt_identity()
