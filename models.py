@@ -88,6 +88,7 @@ class Product(db.Model):
     product_description = db.Column(db.String)
     product_quantity = db.Column(db.Integer)
     product_price = db.Column(db.Float, index=True)
+    category = db.Column(db.String, nullable=True)
 
     key_features = db.relationship('KeyFeature', backref='product', cascade= 'all, delete-orphan', lazy='selectin' )
     specifications = db.relationship('Specification', backref='product', cascade= 'all, delete-orphan', lazy='selectin' )
@@ -132,6 +133,7 @@ class Product(db.Model):
             "product_image": f"/images/{self.product_image}",
             "product_description": self.product_description,
             "product_quantity": self.product_quantity,
+            "category":self.category,
             "product_price": self.product_price,
             "key_features": [feature.to_dict() for feature in self.key_features],
             "specifications": [specification.to_dict() for specification in self.specifications]

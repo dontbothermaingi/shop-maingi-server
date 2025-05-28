@@ -1,4 +1,4 @@
-#!/home/maingi/cart-maingi-serevr/.venv/bin/python
+#!/home/maingi/shop-maingi-server/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
