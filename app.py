@@ -733,12 +733,24 @@ class OrderResource(Resource):
         order_date = datetime.strptime(date_str, '%Y-%m-%d').date()
         payment_method = data.get('payment_method')
         delivery_method = data.get('delivery_method')
+        city = data.get('city')
+        street = data.get('street')
+        country = data.get('country')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        phone_number = data.get('phone_number')
 
         new_order = Order(
             order_date=order_date,
             payment_method=payment_method,
             delivery_method=delivery_method,
             user_id = current_user_id,
+            city=city,
+            street=street,
+            country=country,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
         )
 
         items_data = data.get('order_items')

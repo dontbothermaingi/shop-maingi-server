@@ -251,6 +251,13 @@ class Order(db.Model):
     order_date = db.Column(db.Date)
     payment_method = db.Column(db.String)
     delivery_method = db.Column(db.String)
+    city = db.Column(db.String)
+    street = db.Column(db.String)
+    country = db.Column(db.String)
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    phone_number = db.Column(db.String)
+
 
     order_items = db.relationship('OrderItem', backref='order', cascade="all, delete-orphan", lazy=True)
 
@@ -271,6 +278,13 @@ class Order(db.Model):
             'delivery_method':self.delivery_method,
             'order_amount':self.order_amount,
             'order_quantity':self.order_quantity,
+            "city":self.city,
+            "street":self.street,
+            'user_id': self.user_id,
+            'country':self.country,
+            'first_name':self.first_name,
+            'last_name':self.last_name,
+            'phone_number':self.phone_number,
             'products': [
                 {
                     'product_id': item.product_id,
