@@ -21,8 +21,8 @@ app.json.compact = False
 
 CORS(app, supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app',"http://localhost:4000"])
 
-# Now, specifically allow sharing of image resources
-CORS(app, resources={r"/images/*": {"origins": "*"}})
+# # Now, specifically allow sharing of image resources
+# CORS(app, resources={r"/images/*": {"origins": "*"}})
 
 migrate =  Migrate(app, db)
 
