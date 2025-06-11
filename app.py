@@ -57,61 +57,6 @@ print(os.path.exists(app.config['UPLOAD_FOLDER']))  # Should print True
 print(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp'))
 print(os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp')))  # Should print True
 
-class UserRegister(Resource):
-    @cross_origin(supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app', "http://localhost:4000"])
-    def post(self):
-
-        data = request.get_json()
-
-        username = data.get('username')
-        phone_number = data.get('phone_number')
-        email = data.get('email')
-        password = data.get('password')
-        confirm_password = data.get('confirm_password')
-
-        # Ensure that password and confirm password are strings
-        password = str(password)
-        confirm_password = str(confirm_password)
-
-        # Validate user input data
-        if not username or not phone_number or not email or not password:
-            return jsonify({'error': 'Missing required fields'}), 400
-        
-        if password != confirm_password:
-            return jsonify({'error': 'Passwords do not match'}), 400
-        
-        if User.query.filter_by(username=username).first():
-            return jsonify({'error': 'User already exists'}), 409
-        
-        # Hash password
-        hashed_pw = generate_password_hash(password)
-
-        new_user = User(
-            username=username,
-            phone_number=phone_number,
-            email=email,
-            password=hashed_pw
-        )
-
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({'error': str(e)}), 500
-        
-        return jsonify({
-            "id": new_user.id,
-            "username": new_user.username,
-            "email": new_user.email,
-            "phone_number": new_user.phone_number
-        }), 201
-    
-    @cross_origin(supports_credentials=True, origins=["http://localhost:4000"])
-    def options(self):
-        return {}, 200
-
-api.add_resource(UserRegister, '/userRegister', methods=['POST', 'OPTIONS'])
 
 class UserLogin(Resource):
     @cross_origin(supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app',"http://localhost:4000"])
@@ -175,6 +120,62 @@ class CheckSession(Resource):
 
 # Add the resource to the API
 api.add_resource(CheckSession, '/check_session')
+
+class UserRegister(Resource):
+    @cross_origin(supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app', "http://localhost:4000"])
+    def post(self):
+
+        data = request.get_json()
+
+        username = data.get('username')
+        phone_number = data.get('phone_number')
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confirm_password')
+
+        # Ensure that password and confirm password are strings
+        password = str(password)
+        confirm_password = str(confirm_password)
+
+        # Validate user input data
+        if not username or not phone_number or not email or not password:
+            return jsonify({'error': 'Missing required fields'}), 400
+        
+        if password != confirm_password:
+            return jsonify({'error': 'Passwords do not match'}), 400
+        
+        if User.query.filter_by(username=username).first():
+            return jsonify({'error': 'User already exists'}), 409
+        
+        # Hash password
+        hashed_pw = generate_password_hash(password)
+
+        new_user = User(
+            username=username,
+            phone_number=phone_number,
+            email=email,
+            password=hashed_pw
+        )
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 500
+        
+        return jsonify({
+            "id": new_user.id,
+            "username": new_user.username,
+            "email": new_user.email,
+            "phone_number": new_user.phone_number
+        }), 201
+    
+    @cross_origin(supports_credentials=True, origins=["http://localhost:4000"])
+    def options(self):
+        return {}, 200
+
+api.add_resource(UserRegister, '/register', methods=['POST', 'OPTIONS'])
 
 
 class UserLogout(Resource):
