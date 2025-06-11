@@ -21,8 +21,8 @@ app.json.compact = False
 
 CORS(app, supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app',"http://localhost:4000"])
 
-# # Now, specifically allow sharing of image resources
-# CORS(app, resources={r"/images/*": {"origins": "*"}})
+# Now, specifically allow sharing of image resources
+CORS(app, resources={r"/images/*": {"origins": "*"}})
 
 migrate =  Migrate(app, db)
 
@@ -58,6 +58,7 @@ print(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp'))
 print(os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp')))  # Should print True
 
 class UserRegister(Resource):
+    @cross_origin(supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app', "http://localhost:4000"])
     def post(self):
 
         data = request.get_json()
@@ -105,8 +106,12 @@ class UserRegister(Resource):
             "email": new_user.email,
             "phone_number": new_user.phone_number
         }), 201
+    
+    @cross_origin(supports_credentials=True, origins=["http://localhost:4000"])
+    def options(self):
+        return {}, 200
 
-api.add_resource(UserRegister, '/userRegister')
+api.add_resource(UserRegister, '/userRegister', methods=['POST', 'OPTIONS'])
 
 class UserLogin(Resource):
     @cross_origin(supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app',"http://localhost:4000"])
