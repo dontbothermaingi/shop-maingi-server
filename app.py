@@ -58,6 +58,10 @@ print(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp'))
 print(os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], 'Galaxy_Z10_Ultra.webp')))  # Should print True
 
 class UserRegister(Resource):
+    @cross_origin(supports_credentials=True, origins=["https://maingi-ecommerce.netlify.app","http://localhost:4000"])
+    def options(self):
+        return {}, 200
+    
     @cross_origin(supports_credentials=True, origins=['https://maingi-ecommerce.netlify.app', "http://localhost:4000"])
     def post(self):
 
